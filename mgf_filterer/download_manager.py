@@ -1,9 +1,13 @@
 from pathlib import Path
 
+import click
 import requests
 
 
-def download_file(url: str, dest_folder: Path) -> None:
+@click.command()
+@click.argument("url")
+@click.argument("dest_folder", type=click.Path())
+def download_file(url: str, dest_folder: str) -> None:
     """
     Downloads a file from the specified URL and saves it to the destination folder.
 
@@ -20,21 +24,19 @@ def download_file(url: str, dest_folder: Path) -> None:
 
         # Extract filename from URL and construct full path
         filename = url.split("/")[-1]
-        dest_path = dest_folder / filename
+        dest_path = Path(dest_folder) / filename
 
         # Write file to the destination
         with open(dest_path, "wb") as f:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
 
-        print(f"File downloaded successfully: {dest_path}")
+        click.echo(f"File downloaded successfully: {dest_path}")
     except requests.RequestException as e:
-        print(f"Failed to download the file: {e}")
+        click.echo(f"Failed to download the file: {e}", err=True)
         raise
 
 
 # Example usage
 if __name__ == "__main__":
-    download_url = "https://external.gnps2.org/gnpslibrary/GNPS-LIBRARY.mgf"
-    destination_folder = Path("/path/to/your/destination/folder")
-    download_file(download_url, destination_folder)
+    download_file()

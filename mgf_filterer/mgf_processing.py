@@ -1,11 +1,14 @@
 from pathlib import Path
 from typing import List
 
+import click
 from matchms.importing import load_from_mgf
 
 from mgf_filterer.exceptions import MGFFileNotFoundError
 
 
+@click.command()
+@click.argument("filepath", type=click.Path(exists=True))
 def load_mgf_files(filepath: str) -> List:
     """
     Load spectra from a .mgf file.
@@ -23,11 +26,10 @@ def load_mgf_files(filepath: str) -> List:
         raise MGFFileNotFoundError(filepath)
 
     spectra = list(load_from_mgf(filepath))
+    click.echo(f"Loaded {len(spectra)} spectra from the file.")
     return spectra
 
 
 # Example usage:
 if __name__ == "__main__":
-    # Replace 'path_to_your_file.mgf' with the actual file path
-    spectra = load_mgf_files("path_to_your_file.mgf")
-    print(f"Loaded {len(spectra)} spectra from the file.")
+    load_mgf_files()
