@@ -13,6 +13,8 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.8,<3.13"
 matchms = "^0.24.3"
+requests = "^2.31.0"
+click = "^8.1.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
@@ -22,6 +24,7 @@ mypy = "^1.5.1"
 pre-commit = "^3.4.0"
 tox = "^4.11.1"
 ipykernel = "^6.29.4"
+requests-mock = "^1.12.1"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.4.2"
